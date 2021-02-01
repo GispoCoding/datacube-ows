@@ -5,10 +5,16 @@
 
 # REUSABLE CONFIG FRAGMENTS - Band alias maps
 bands_cloudless = {
-        "B01": ["red"],
-        "B02": ["green"],
-        "B03": ["blue"],
-        "B04": ["recentness"],
+    "B01": ["red"],
+    "B02": ["green"],
+    "B03": ["blue"],
+    "B04": ["recentness"],
+}
+
+bands_s2 = {
+    "B02": ["red"],
+    "B03": ["green"],
+    "B04": ["blue"],
 }
 
 # REUSABLE CONFIG FRAGMENTS - Style definitions
@@ -58,6 +64,23 @@ cloudless_mosaic_style = {
     },
     "scale_range": [0.0, 65535.0],
 }
+s2_style = {
+    "name": "s2_style",
+    "title": "s2 image style",
+    "abstract": "some test style",
+    "components": {
+        "red": {
+            "B02": 1.0
+        },
+        "green": {
+            "B03": 1.0
+        },
+        "blue": {
+            "B04": 1.0
+        }
+    },
+    "scale_range": [0.0, 65535.0],
+}
 
 # REUSABLE CONFIG FRAGMENTS - resource limit declarations
 
@@ -95,9 +118,8 @@ ows_cfg = {
         # A list of fully qualified URLs that the service can return
         # in the GetCapabilities documents based on the requesting url
         "allowed_urls": [
-            "http://3.64.11.32:8000/",
-            "http://127.0.0.1:5000/",
             "http://127.0.0.1:8000/",
+            "http://127.0.0.1:5000/",
             "http://localhost/odc_ows",
             "https://localhost/odc_ows",
             "https://alternateurl.domain.org/odc_ows",
@@ -176,9 +198,9 @@ ows_cfg = {
         # Note that this feature is currently restricted to data stored in AWS S3.
         # This feature is also fairly specialised to DEA requirements and may not be suited to more general use.
         # All Optional
-        "s3_url": "http://data.au",
-        "s3_bucket": "s3_bucket_name",
-        "s3_aws_zone": "ap-southeast-2",
+        # "s3_url": "http://data.au",
+        # "s3_bucket": "s3_bucket_name",
+        # "s3_aws_zone": "ap-southeast-2",
         # Max tile height/width for wms.  (N.B. Does not apply to WMTS)
         # Optional, defaults to 256x256
         "max_width": 512,
@@ -274,15 +296,38 @@ ows_cfg = {
                 "extent_mask_func": "datacube_ows.ogc_utils.mask_by_val",
                 "always_fetch_bands": [],
             },
-            # "wcs": {
-            #    "native_crs": "EPSG:32635",
-            #    "default_bands": ["B01", "B02", "B03"],
-            #    "native_resolution": [ 10, -10 ],
-            # },
+            "wcs": {
+               "native_crs": "EPSG:32635",
+               "default_bands": ["B01", "B02", "B03"],
+               "native_resolution": [ 10, -10 ],
+            },
             "styling": {
                 "default_style": "cloudless_mosaic_style",
                 "styles": [
                     cloudless_mosaic_style,
+                ]
+            }
+        },
+        {
+            "title": "s2",
+            "name": "s2",
+            "abstract": "s2 images",
+            "product_name": "s2a_level1c_granule",
+            "bands": bands_s2,
+            "resource_limits": standard_resource_limits,
+            "image_processing": {
+                "extent_mask_func": "datacube_ows.ogc_utils.mask_by_val",
+                "always_fetch_bands": [],
+            },
+            "wcs": {
+               "native_crs": "EPSG:32635",
+               "default_bands": ["B02", "B03", "B04"],
+               "native_resolution": [ 10, -10 ],
+            },
+            "styling": {
+                "default_style": "s2_style",
+                "styles": [
+                    s2_style,
                 ]
             }
         },
