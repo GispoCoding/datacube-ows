@@ -47,10 +47,10 @@ style_rgb = {
     "scale_range": [0.0, 2000.0],
 }
 
-cloudless_mosaic_style = {
-    "name": "cloudless_mosaic_style",
-    "title": "Cloudless mosaic style",
-    "abstract": "Cloudless RGB mosaic, with green vegetation in green, dead vegetation in blue, and bare soil in red",
+cloudless_mosaic = {
+    "name": "cloudless_mosaic",
+    "title": "Cloudless mosaic",
+    "abstract": "Cloudless RGB mosaic",
     "components": {
         "red": {
             "B01": 1.0
@@ -62,7 +62,20 @@ cloudless_mosaic_style = {
             "B03": 1.0
         }
     },
-    "scale_range": [0.0, 65535.0],
+    "scale_range": [100.0, 6000.0],
+}
+recentness_style = {
+    "name": "recentness",
+    "title": "Recentness",
+    "abstract": "Recentness of cloudless RGB mosaic",
+    "index_function": {
+        "function": "datacube_ows.band_utils.single_band",
+        "kwargs": {
+            "band": "B04",
+        },
+    },
+    "needed_bands": ["B04"],
+    "range": [18500, 18600],
 }
 s2_style = {
     "name": "s2_style",
@@ -299,12 +312,13 @@ ows_cfg = {
             "wcs": {
                "native_crs": "EPSG:32635",
                "default_bands": ["B01", "B02", "B03"],
-               "native_resolution": [ 10, -10 ],
+               "native_resolution": [10, -10],
             },
             "styling": {
-                "default_style": "cloudless_mosaic_style",
+                "default_style": "cloudless_mosaic",
                 "styles": [
-                    cloudless_mosaic_style,
+                    cloudless_mosaic,
+                    recentness_style,
                 ]
             }
         },
