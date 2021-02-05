@@ -207,3 +207,6 @@ def log_time_and_request_response(response):
 # Note: register your default metrics after all routes have been set up.
 # Also note, that Gauge metrics registered as default will track the /metrics endpoint, and this can't be disabled at the moment.
 initialise_prometheus_register(metrics)
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=8000)
