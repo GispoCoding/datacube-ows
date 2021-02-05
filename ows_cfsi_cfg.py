@@ -62,7 +62,7 @@ cloudless_mosaic = {
             "B03": 1.0
         }
     },
-    "scale_range": [100.0, 6000.0],
+    "scale_range": [100.0, 2000.0],
 }
 recentness_style = {
     "name": "recentness",
@@ -92,7 +92,7 @@ s2_style = {
             "B04": 1.0
         }
     },
-    "scale_range": [0.0, 65535.0],
+    "scale_range": [100.0, 2000.0],
 }
 
 # REUSABLE CONFIG FRAGMENTS - resource limit declarations

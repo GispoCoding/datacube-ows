@@ -24,9 +24,7 @@ services:
       WMS_CONFIG_PATH: /env/config/ows_cfg.py
       # Path from the PYTHONPATH to the config object (default PYTHONPATH is /env)
       DATACUBE_OWS_CFG: config.ows_cfg.ows_cfg
-      AWS_DEFAULT_REGION: ${AWS_REGION}
-      # Talk to AWS without using credentials
-      AWS_NO_SIGN_REQUEST: "${AWS_NO_SIGN_REQUEST}"
+      AWS_DEFAULT_REGION: ${AWS_DEFAULT_REGION}
       # Enable Metrics
       prometheus_multiproc_dir: ${prometheus_multiproc_dir}
       # Dev flags
@@ -34,7 +32,7 @@ services:
       FLASK_ENV: ${FLASK_ENV}
       PYDEV_DEBUG: "${PYDEV_DEBUG}"
     networks:
-      - cfsi
+      - cfsi_cfsi
     ports:
       - "8000:8000"
     volumes:
@@ -46,5 +44,5 @@ services:
     command: ["wait-for-db", "flask", "run", "--host=0.0.0.0", "--port=8000"]
 
 networks:
-  cfsi:
+  cfsi_cfsi:
     external: true
