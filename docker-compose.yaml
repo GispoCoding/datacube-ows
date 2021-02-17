@@ -42,6 +42,7 @@ services:
       - ./docker/ows/wait-for-db:/usr/local/bin/wait-for-db
       - ./:/code/
       - ./artifacts:/mnt/artifacts
+      - ${CFSI_OUTPUT_HOST}:${CFSI_OUTPUT_CONTAINER}
     restart: always
     command: ["wait-for-db", "flask", "run", "--host=0.0.0.0", "--port=8000"]
 
