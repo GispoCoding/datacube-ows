@@ -131,6 +131,7 @@ ows_cfg = {
         # A list of fully qualified URLs that the service can return
         # in the GetCapabilities documents based on the requesting url
         "allowed_urls": [
+            "http://cfsi-dev.gispocoding.fi/",
             "http://127.0.0.1:8000/",
             "http://127.0.0.1:5000/",
             "http://localhost/odc_ows",

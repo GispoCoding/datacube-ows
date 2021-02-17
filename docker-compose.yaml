@@ -36,7 +36,7 @@ services:
     networks:
       - cfsi_cfsi
     ports:
-      - "8000:8000"
+      - "80:8000"
     volumes:
       - ${OWS_CFG_FILE}:/env/config/ows_cfg.py
       - ./docker/ows/wait-for-db:/usr/local/bin/wait-for-db
