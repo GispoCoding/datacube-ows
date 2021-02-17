@@ -3,6 +3,15 @@
 # THIS IS A TESTING FILE
 # Please refer to datacube_ows/ows_cfg_example.py for EXAMPLE CONFIG
 
+def read_date_range(product: str) -> (int, int):
+    """ Read min and max dates from a product """
+    from datacube import Datacube
+    dc = Datacube(app="ows_config_file")
+    ds = dc.load(product=product, resolution=(10, -10), output_crs='EPSG:4326', dask_chunks={})
+    t0 = ds.time.values[0].astype("datetime64[D]").astype("uint16")
+    t1 = ds.time.values[-1].astype("datetime64[D]").astype("uint16")
+    return t0, t1
+
 # REUSABLE CONFIG FRAGMENTS - Band alias maps
 bands_cloudless = {
     "B01": ["red"],
@@ -75,7 +84,7 @@ recentness_style = {
         },
     },
     "needed_bands": ["B04"],
-    "range": [18500, 18600],
+    "range": read_date_range("cloudless_mosaic"),
 }
 s2_style = {
     "name": "s2_style",
