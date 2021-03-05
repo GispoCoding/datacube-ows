@@ -36,7 +36,7 @@ services:
     networks:
       - cfsi_cfsi
     ports:
-      - "80:8000"
+      - "8000:8000"
     volumes:
       - ${OWS_CFG_FILE}:/env/config/ows_cfg.py
       - ./docker/ows/wait-for-db:/usr/local/bin/wait-for-db
@@ -45,6 +45,18 @@ services:
       - ${CFSI_OUTPUT_HOST}:${CFSI_OUTPUT_CONTAINER}
     restart: always
     command: ["wait-for-db", "flask", "run", "--host=0.0.0.0", "--port=8000"]
+  nginx:
+    image: nginx
+    networks:
+      - cfsi_cfsi
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ../nginx/certs:/etc/nginx/certs
+      - ../nginx/nginx.conf:/etc/nginx/conf.d/nginx.conf
+
+
 
 networks:
   cfsi_cfsi:
