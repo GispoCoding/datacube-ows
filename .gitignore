@@ -79,3 +79,7 @@ docker-compose.yaml
 ows_cfg.py
 
 _version.py
+
+# certbot
+data/certbot/
+
