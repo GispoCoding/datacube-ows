@@ -56,8 +56,8 @@ style_rgb = {
     "scale_range": [0.0, 2000.0],
 }
 
-cloudless_mosaic = {
-    "name": "cloudless_mosaic",
+cloudless_mosaic_style = {
+    "name": "cloudless_mosaic_style",
     "title": "Cloudless mosaic",
     "abstract": "Cloudless RGB mosaic",
     "components": {
@@ -73,10 +73,10 @@ cloudless_mosaic = {
     },
     "scale_range": [100.0, 2000.0],
 }
-recentness_style = {
-    "name": "recentness",
-    "title": "Recentness",
-    "abstract": "Recentness of cloudless RGB mosaic",
+s2cloudless_recentness_style = {
+    "name": "s2cloudless_recentness",
+    "title": "s2cloudless recentness",
+    "abstract": "Recentness of cloudless RGB mosaic with s2cloudless masks",
     "index_function": {
         "function": "datacube_ows.band_utils.single_band",
         "kwargs": {
@@ -84,7 +84,20 @@ recentness_style = {
         },
     },
     "needed_bands": ["B04"],
-    "range": read_date_range("cloudless_mosaic"),
+    "range": read_date_range("s2cloudless_mosaic"),
+}
+fmask_recentness_style = {
+    "name": "fmask_recentness",
+    "title": "fmask recentness",
+    "abstract": "Recentness of cloudless RGB mosaic with fmask masks",
+    "index_function": {
+        "function": "datacube_ows.band_utils.single_band",
+        "kwargs": {
+            "band": "B04",
+        },
+    },
+    "needed_bands": ["B04"],
+    "range": read_date_range("fmask_mosaic"),
 }
 s2_style = {
     "name": "s2_style",
@@ -140,7 +153,7 @@ ows_cfg = {
         # A list of fully qualified URLs that the service can return
         # in the GetCapabilities documents based on the requesting url
         "allowed_urls": [
-            "https://cfsi-wms-demo.gispocoding.fi/",
+            "http://cfsi-dev.gispocoding.fi/",
             "http://127.0.0.1:8000/",
             "http://127.0.0.1:5000/",
             "http://localhost/odc_ows",
@@ -309,10 +322,10 @@ ows_cfg = {
     #    is also a coverage, that may be requested in WCS DescribeCoverage or WCS GetCoverage requests.
     "layers": [
         {
-            "title": "cloudless_mosaic",
-            "name": "cloudless_mosaic",
-            "abstract": "cloudless mosaic",
-            "product_name": "cloudless_mosaic",
+            "title": "s2cloudless",
+            "name": "s2cloudless",
+            "abstract": "cloudless s2cloudless mosaic",
+            "product_name": "s2cloudless_mosaic",
             "bands": bands_cloudless,
             "resource_limits": standard_resource_limits,
             "image_processing": {
@@ -325,10 +338,34 @@ ows_cfg = {
                "native_resolution": [10, -10],
             },
             "styling": {
-                "default_style": "cloudless_mosaic",
+                "default_style": "cloudless_mosaic_style",
                 "styles": [
-                    cloudless_mosaic,
-                    recentness_style,
+                    cloudless_mosaic_style,
+                    s2cloudless_recentness_style,
+                ]
+            }
+        },
+        {
+            "title": "fmask",
+            "name": "fmask",
+            "abstract": "cloudless fmask mosaic",
+            "product_name": "fmask_mosaic",
+            "bands": bands_cloudless,
+            "resource_limits": standard_resource_limits,
+            "image_processing": {
+                "extent_mask_func": "datacube_ows.ogc_utils.mask_by_val",
+                "always_fetch_bands": [],
+            },
+            "wcs": {
+               "native_crs": "EPSG:32635",
+               "default_bands": ["B01", "B02", "B03"],
+               "native_resolution": [10, -10],
+            },
+            "styling": {
+                "default_style": "cloudless_mosaic_style",
+                "styles": [
+                    cloudless_mosaic_style,
+                    fmask_recentness_style,
                 ]
             }
         },
@@ -336,7 +373,7 @@ ows_cfg = {
             "title": "s2",
             "name": "s2",
             "abstract": "s2 images",
-            "product_name": "s2a_level1c_granule",
+            "product_name": "s2_level1c_granule",
             "bands": bands_s2,
             "resource_limits": standard_resource_limits,
             "image_processing": {
